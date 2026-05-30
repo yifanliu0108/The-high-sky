@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The High Sky</title>
+    <meta
+      name="description"
+      content="A vertical climb through the atmosphere, inspired by The Deep Sea and themed around climate change."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside class="altimeter" aria-live="polite" aria-label="Current altitude">
+      <div class="altimeter__value"><span id="altitude-value">0</span><span> km</span></div>
+      <div class="altimeter__label">high</div>
+      <div class="altimeter__layer" id="layer-value">Troposphere</div>
+    </aside>
+
+    <main id="sky" class="sky" aria-label="The High Sky climate scroll">
+      <div class="sky-gradient" aria-hidden="true"></div>
+      <div id="layer-bands" class="layer-bands" aria-hidden="true"></div>
+
+      <section class="intro">
+        <p class="intro__eyebrow">from sea level to near space</p>
+        <h1>The High Sky</h1>
+        <p>
+          A climb through the thin atmosphere where heat is trapped, storms are
+          fed, ice clouds shimmer, and satellites watch a changing planet.
+        </p>
+      </section>
+
+      <div class="surface" aria-hidden="true">
+        <div class="surface__sun"></div>
+        <div class="surface__cloud surface__cloud--one"></div>
+        <div class="surface__cloud surface__cloud--two"></div>
+        <div class="surface__city">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="surface__ground"></div>
+      </div>
+
+      <div id="markers" class="markers"></div>
+      <div id="altitude-lines" class="altitude-lines" aria-hidden="true"></div>
+
+      <section class="ending" id="ending">
+        <p class="ending__eyebrow">760 km high</p>
+        <h2>The atmosphere is a thin shell.</h2>
+        <p>
+          Most climate change happens in the lowest slice of air, but its
+          evidence reaches the whole sky: warmer nights, heavier rain, shifting
+          clouds, shrinking ice, clearer satellite records, and a fragile blue
+          edge visible from orbit.
+        </p>
+      </section>
+    </main>
+
+    <footer class="sources">
+      <a href="https://neal.fun/deep-sea/">Inspired by The Deep Sea</a>
+      <a href="https://science.nasa.gov/earth/earth-atmosphere/earths-atmosphere-a-multi-layered-cake/">NASA atmosphere layers</a>
+      <a href="https://www.climate.gov/ghg/what-are-greenhouse-gases-and-why-do-they-matter">NOAA greenhouse gases</a>
+      <a href="https://climate.nasa.gov/">NASA climate change</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
