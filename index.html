@@ -6,13 +6,15 @@
     <title>The High Sky</title>
     <meta
       name="description"
-      content="A vertical climb through the atmosphere, inspired by The Deep Sea and themed around climate change."
+      content="Scroll from sea level toward space — atmosphere layers, climate change, and NASA Earth science."
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <aside class="altimeter" aria-live="polite" aria-label="Current altitude">
-      <div class="altimeter__value"><span id="altitude-value">0</span><span> km</span></div>
+      <div class="altimeter__value">
+        <span id="altitude-value">0</span><span class="altimeter__unit"> km</span>
+      </div>
       <div class="altimeter__label">high</div>
       <div class="altimeter__layer" id="layer-value">Troposphere</div>
     </aside>
@@ -24,22 +26,14 @@
       <section class="intro">
         <p class="intro__eyebrow">from sea level to near space</p>
         <h1>The High Sky</h1>
-        <p>
-          A climb through the thin atmosphere where heat is trapped, storms are
-          fed, ice clouds shimmer, and satellites watch a changing planet.
+        <p class="intro__lede">
+          Scroll upward through the atmosphere — where people add greenhouse gases,
+          weather forms, ozone shields life, and satellites read a warming planet.
         </p>
+        <p class="scroll-cue" aria-hidden="true">Scroll to climb</p>
       </section>
 
-      <div class="surface" aria-hidden="true">
-        <div class="surface__sun"></div>
-        <div class="surface__cloud surface__cloud--one"></div>
-        <div class="surface__cloud surface__cloud--two"></div>
-        <div class="surface__city">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-        <div class="surface__ground"></div>
-      </div>
-
+      <div id="milestones" class="milestones" aria-hidden="true"></div>
       <div id="markers" class="markers"></div>
       <div id="altitude-lines" class="altitude-lines" aria-hidden="true"></div>
 
@@ -47,19 +41,21 @@
         <p class="ending__eyebrow">760 km high</p>
         <h2>The atmosphere is a thin shell.</h2>
         <p>
-          Most climate change happens in the lowest slice of air, but its
-          evidence reaches the whole sky: warmer nights, heavier rain, shifting
-          clouds, shrinking ice, clearer satellite records, and a fragile blue
-          edge visible from orbit.
+          Almost every climate signal humans feel — heat waves, heavier rain, fire
+          smoke, rising seas — is written in the lowest slice of air. From orbit,
+          that shell looks impossibly small. The data say it is changing fast.
         </p>
       </section>
     </main>
 
     <footer class="sources">
-      <a href="https://neal.fun/deep-sea/">Inspired by The Deep Sea</a>
-      <a href="https://science.nasa.gov/earth/earth-atmosphere/earths-atmosphere-a-multi-layered-cake/">NASA atmosphere layers</a>
-      <a href="https://www.climate.gov/ghg/what-are-greenhouse-gases-and-why-do-they-matter">NOAA greenhouse gases</a>
-      <a href="https://climate.nasa.gov/">NASA climate change</a>
+      <span class="sources__label">Inspired by</span>
+      <a href="https://neal.fun/deep-sea/">The Deep Sea</a>
+      <a href="https://science.nasa.gov/earth/">NASA Earth Science</a>
+      <a href="https://climate.nasa.gov/">NASA Climate</a>
+      <a href="https://www.climate.gov/">NOAA Climate.gov</a>
+      <a href="https://www.spacex.com/">SpaceX</a>
+      <span class="sources__note">Photos: NASA, NOAA, Wikimedia Commons (credited at each stop)</span>
     </footer>
 
     <script src="script.js"></script>
