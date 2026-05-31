@@ -545,7 +545,7 @@ const CITY_TIME_THEMES = {
 };
 
 const CITY_TIME_STORAGE_KEY = "cityTime";
-let currentCityTime = "dusk";
+let currentCityTime = "day";
 
 function resolveSkyColor(km, defaultColor) {
   const theme = CITY_TIME_THEMES[currentCityTime];
@@ -1009,7 +1009,7 @@ const normalizedCityTime = savedCityTime === "dawn" ? "dusk" : savedCityTime;
 if (normalizedCityTime && CITY_TIME_THEMES[normalizedCityTime]) {
   setCityTime(normalizedCityTime, { persist: false });
 } else {
-  setCityTime("dusk", { persist: false });
+  setCityTime("day", { persist: false });
 }
 
 history.scrollRestoration = "manual";

@@ -10,7 +10,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-city-time="day">
     <button
       type="button"
       class="music-toggle"
@@ -23,15 +23,10 @@
     </button>
 
     <div class="time-switch" id="time-switch" role="group" aria-label="City time of day">
-      <button type="button" class="time-switch__btn" data-time="day" aria-pressed="false">
+      <button type="button" class="time-switch__btn is-active" data-time="day" aria-pressed="true">
         Day
       </button>
-      <button
-        type="button"
-        class="time-switch__btn is-active"
-        data-time="dusk"
-        aria-pressed="true"
-      >
+      <button type="button" class="time-switch__btn" data-time="dusk" aria-pressed="false">
         Dusk
       </button>
       <button type="button" class="time-switch__btn" data-time="night" aria-pressed="false">
@@ -57,7 +52,7 @@
       <div id="title-city" class="title-city" aria-hidden="true">
         <img
           class="title-city__skyline"
-          src="images/city_background/city_dusk.png"
+          src="images/city_background/city_day.png"
           alt=""
           width="4228"
           height="1932"
