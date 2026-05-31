@@ -1,5 +1,8 @@
 const ATMOSPHERE_TOP_KM = 760;
 const EXPLORE_TOP_KM = 384400;
+const ROCKET_START_KM = ATMOSPHERE_TOP_KM;
+const ROCKET_FADE_START_KM = 350000;
+const ROCKET_HIDE_KM = 382000;
 const EXPLORE_SCROLL_PX = 14000;
 const TOP_PADDING = 620;
 const FOCUS_RATIO = 0.68;
@@ -25,6 +28,7 @@ const layers = [
     range: "50–85 km",
     start: 50,
     end: 85,
+    labelTop: "36%",
     gradient: "linear-gradient(to bottom, rgba(18,26,58,0.12), rgba(45,55,110,0.07))",
   },
   {
@@ -114,6 +118,7 @@ const exploreMarkers = [
     side: "left",
     offset: 480,
     mobileOffset: 400,
+    hideAlt: true,
     title: "Saturn V · Apollo 8",
     text: "On 21 December 1968, the Saturn V carried the first humans to leave Earth’s orbit. In minutes they cleared the last breathable air — technology carrying biology into the dark.",
     data: "Launch: Kennedy Space Center · Crew: Borman, Lovell, Anders · Mission: lunar orbit.",
@@ -144,9 +149,9 @@ const exploreMarkers = [
     title: "Outbound to the Moon",
     text: "Apollo 8 coasted through this void for three days. Humans watched Earth shrink — industry, forests, and oceans becoming one system, without borders visible from here.",
     data: "Translunar injection · Dec 1968 · ~240,000 mi to lunar orbit.",
-    image: "images/limb.jpg",
-    imageAlt: "Earth from deep space",
-    credit: "NASA / ISS Expedition 51",
+    image: "images/apollo8-earth.jpg",
+    imageAlt: "Earth seen from Apollo 8 en route to the Moon, December 1968",
+    credit: "NASA / Apollo 8 (public domain)",
   },
   {
     alt: 384400,
@@ -279,9 +284,33 @@ const markers = [
     title: "Stratopause",
     text: "Air is thin, but this region still holds the chemistry — ozone, aerosols, water vapor — that links the stratosphere to surface climate.",
     data: "~50 km: transition between stratosphere and mesosphere.",
-    image: "images/terra.jpg",
-    imageAlt: "Sand dunes in the Arabian Empty Quarter imaged by NASA Terra",
-    credit: "NASA Terra (EOS AM-1) / Wikimedia Commons",
+    image: "images/stratopause.jpg",
+    imageAlt: "Orbital sunset illuminating Earth's upper atmosphere in pink and blue",
+    credit: "NASA / ISS Expedition 74 (public domain)",
+  },
+  {
+    alt: 58,
+    side: "right",
+    offset: 80,
+    mobileOffset: 50,
+    title: "Sounding rocket",
+    text: "When balloons stop near 35 km, small meteorological rockets take over — lofting instruments through the mesosphere to measure winds, temperature, and dust before falling back to Earth.",
+    data: "NASA sounding rockets: ~50–850 km apogee · minutes in flight, decades of upper-air records.",
+    image: "images/sounding-rocket.jpg",
+    imageAlt: "NASA Black Brant XII sounding rocket launching at night",
+    credit: "NASA / public domain (Wikimedia Commons)",
+  },
+  {
+    alt: 68,
+    side: "left",
+    offset: 70,
+    mobileOffset: 40,
+    title: "Meteors",
+    text: "Most shooting stars burn up here — dust and pebbles from comets hitting the mesosphere at tens of km/s. Friction with thin air makes a brief, bright streak; little reaches the ground.",
+    data: "Typical ablation: ~70–100 km · the Perseids peak each August.",
+    image: "images/meteor.jpg",
+    imageAlt: "Meteor outburst captured in a long-exposure night sky photo",
+    credit: "NASA Ames Research Center / public domain (Wikimedia Commons)",
   },
   {
     alt: 76,
@@ -299,9 +328,9 @@ const markers = [
     title: "Mesopause",
     text: "Among the coldest places around Earth — a reminder that climate change is not uniform warming at every height.",
     data: "Mesopause temperatures can fall below −90 °C.",
-    image: "images/aurora.jpg",
-    imageAlt: "Aurora borealis over mountains in Norway",
-    credit: "Unsplash / Wikimedia Commons",
+    image: "images/mesopause.jpg",
+    imageAlt: "Polar mesospheric clouds as a thin bright line on Earth's horizon from the ISS",
+    credit: "NASA / ISS Expedition 40 (public domain)",
   },
   {
     alt: 100,
@@ -309,9 +338,9 @@ const markers = [
     title: "Kármán line",
     text: "A common edge-of-space marker. From here, Earth is a bright curve with a fragile blue rim — nearly all breathable air and climate action remain below.",
     data: "100 km: FAI definition of spaceflight altitude.",
-    image: "images/limb.jpg",
-    imageAlt: "Crescent moon and Earth's thin atmosphere from ISS",
-    credit: "NASA / ISS Expedition 51",
+    image: "images/karman.jpg",
+    imageAlt: "Earth's thin blue atmosphere hovering on the horizon against black space",
+    credit: "NASA Earth Observatory / ISS (CC BY 2.0, Wikimedia Commons)",
   },
   {
     alt: 250,
@@ -340,9 +369,9 @@ const markers = [
     title: "Climate satellites",
     text: "NASA’s Earth Observing System — Terra, Aqua, and others — ride to orbit on rockets like the Delta II. Their data on water, ice, and carbon inform science, economies, and treaties.",
     data: "Terra launched 1999 · Aqua 2002 on Delta II · data at earthdata.nasa.gov.",
-    image: "images/terra.jpg",
-    imageAlt: "Earth surface imaged by NASA Terra satellite",
-    credit: "NASA Terra (EOS AM-1) / Wikimedia Commons",
+    image: "images/climate-satellites.jpg",
+    imageAlt: "Delta II rocket launching the CALIPSO and CloudSat climate satellites",
+    credit: "NASA / public domain (Wikimedia Commons)",
   },
   {
     alt: 705,
@@ -351,9 +380,9 @@ const markers = [
     title: "Earth-observing fleet",
     text: "NASA and partners measure sea level, ice sheets, methane plumes, forest cover, fires, and Earth's energy budget — turning the sky into a climate laboratory.",
     data: "NASA: 25+ active Earth science missions · data free at earthdata.nasa.gov.",
-    image: "images/terra.jpg",
-    imageAlt: "Earth surface features imaged by NASA Terra satellite",
-    credit: "NASA Terra (EOS AM-1) / Wikimedia Commons",
+    image: "images/earth-fleet.jpg",
+    imageAlt: "NASA visualization of the Earth observing satellite fleet in orbit",
+    credit: "NASA Scientific Visualization Studio (public domain)",
   },
 ];
 
@@ -405,6 +434,148 @@ const SKY_GRADIENT_STOPS = [
   { km: 1, color: "#f0b68a" },
   { km: 0, color: "#f0b68a" },
 ];
+
+const CITY_TIME_THEMES = {
+  day: {
+    label: "Day",
+    image: "images/city_background/city_day.png",
+    skyStops: {
+      0: "#d4f5f1",
+      0.5: "#ccf2ed",
+      1: "#c4efe9",
+      1.5: "#bcebe5",
+      2: "#b4e7e1",
+      2.5: "#a8e2dc",
+      3: "#9cdcd6",
+      4: "#90d6d0",
+      5: "#84d0ca",
+      6: "#78c8c4",
+      7: "#6ec0be",
+      8: "#64b8b8",
+      9: "#5ab0b2",
+      10: "#52a8ac",
+      11: "#4ca0a6",
+      12: "#4698a0",
+      16: "#408c98",
+      22: "#3a8490",
+      30: "#347c88",
+      40: "#307484",
+      50: "#2c6c80",
+      100: "#28647a",
+    },
+  },
+  dusk: {
+    label: "Dusk",
+    image: "images/city_background/city_dawn.png",
+    skyStops: {
+      0: "#f0b68a",
+      1: "#f0b68a",
+      1.5: "#f0b68a",
+      2: "#f0b689",
+      2.5: "#f0b688",
+      3: "#efb686",
+      4: "#eeb584",
+      5: "#edb382",
+      6: "#ecb07f",
+      7: "#eaab7c",
+      8: "#e7a578",
+      9: "#e39f74",
+      10: "#df986f",
+      11: "#da916a",
+      12: "#d58a64",
+      16: "#c88252",
+      22: "#a87062",
+      30: "#927060",
+      40: "#887068",
+      50: "#7a8a88",
+    },
+  },
+  night: {
+    label: "Night",
+    image: "images/city_background/city_night.png",
+    skyStops: {
+      0: "#10141c",
+      1: "#12161f",
+      1.5: "#141822",
+      2: "#161a26",
+      2.5: "#181c2a",
+      3: "#1a1e2e",
+      4: "#1c2032",
+      5: "#1e2236",
+      6: "#20263a",
+      7: "#22283e",
+      8: "#242a42",
+      9: "#262c46",
+      10: "#282e4a",
+      11: "#2a304c",
+      12: "#2c324e",
+      16: "#303648",
+      22: "#343a48",
+      30: "#383c48",
+      40: "#3c4048",
+      50: "#404448",
+    },
+  },
+};
+
+const CITY_TIME_STORAGE_KEY = "cityTime";
+let currentCityTime = "dusk";
+
+function resolveSkyColor(km, defaultColor) {
+  const theme = CITY_TIME_THEMES[currentCityTime];
+  const skyStops = theme?.skyStops;
+
+  if (skyStops && Object.prototype.hasOwnProperty.call(skyStops, km)) {
+    return skyStops[km];
+  }
+
+  return defaultColor;
+}
+
+function setCityTime(time, { persist = true } = {}) {
+  const theme = CITY_TIME_THEMES[time];
+
+  if (!theme) {
+    return;
+  }
+
+  currentCityTime = time;
+  document.body.dataset.cityTime = time;
+
+  if (persist) {
+    localStorage.setItem(CITY_TIME_STORAGE_KEY, time);
+  }
+
+  if (timeSwitchButtons.length) {
+    timeSwitchButtons.forEach((button) => {
+      const isActive = button.dataset.time === time;
+
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+  }
+
+  const skyline = titleCity?.querySelector(".title-city__skyline");
+
+  if (skyline instanceof HTMLImageElement) {
+    const nextSrc = theme.image;
+
+    if (!skyline.src.endsWith(nextSrc)) {
+      skyline.addEventListener(
+        "load",
+        () => {
+          positionTitleCity();
+          positionIntro();
+        },
+        { once: true },
+      );
+      skyline.src = nextSrc;
+    }
+  }
+
+  buildSkyGradient();
+  updateAltimeter();
+}
 
 function atmosphereDistance(km) {
   if (km <= 12) {
@@ -558,7 +729,7 @@ function buildSkyGradient() {
     const y = altitudeToY(km);
     const percent = Math.max(0, Math.min(100, (y / height) * 100));
 
-    return { color, percent };
+    return { color: resolveSkyColor(km, color), percent };
   })
     .sort((a, b) => a.percent - b.percent)
     .map(({ color, percent }) => `${color} ${percent.toFixed(1)}%`)
@@ -575,9 +746,13 @@ function renderMarkers(items, root) {
       ? `<p class="marker__data">${item.data}</p>`
       : "";
 
+    const altLine = item.hideAlt
+      ? ""
+      : `<div class="marker__alt">${formatAlt(item.alt)} km</div>`;
+
     marker.className = `marker marker--${item.side}${seaLevelClass}`;
     marker.innerHTML = `
-      <div class="marker__alt">${formatAlt(item.alt)} km</div>
+      ${altLine}
       ${markerFigure(item)}
       <h2>${item.title}</h2>
       <p class="marker__text">${item.text}</p>
@@ -677,7 +852,7 @@ function positionIntro() {
 }
 
 function updateRocket(km) {
-  const showRocket = km >= 700 && km < 120000;
+  const showRocket = km >= ROCKET_START_KM && km < ROCKET_HIDE_KM;
 
   if (!showRocket) {
     rocketShip.hidden = true;
@@ -691,8 +866,11 @@ function updateRocket(km) {
 
   let opacity = 0.9;
 
-  if (km > 60000) {
-    opacity = Math.max(0.35, 0.9 - (km - 60000) / 80000);
+  if (km > ROCKET_FADE_START_KM) {
+    opacity = Math.max(
+      0,
+      0.9 * (1 - (km - ROCKET_FADE_START_KM) / (ROCKET_HIDE_KM - ROCKET_FADE_START_KM)),
+    );
   }
 
   rocketShip.style.opacity = String(opacity);
@@ -780,6 +958,26 @@ async function toggleMusic() {
 
 musicToggle.addEventListener("click", toggleMusic);
 
+const timeSwitch = document.querySelector("#time-switch");
+const timeSwitchButtons = timeSwitch
+  ? [...timeSwitch.querySelectorAll(".time-switch__btn")]
+  : [];
+
+timeSwitchButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setCityTime(button.dataset.time);
+  });
+});
+
+const savedCityTime = localStorage.getItem(CITY_TIME_STORAGE_KEY);
+const normalizedCityTime = savedCityTime === "dawn" ? "dusk" : savedCityTime;
+
+if (normalizedCityTime && CITY_TIME_THEMES[normalizedCityTime]) {
+  setCityTime(normalizedCityTime, { persist: false });
+} else {
+  setCityTime("dusk", { persist: false });
+}
+
 history.scrollRestoration = "manual";
 renderLayerBands(layerRoot, layers);
 renderLayerBands(exploreLayerRoot, exploreLayers);
@@ -788,7 +986,7 @@ renderMarkers(markers, markerRoot);
 renderMarkers(exploreMarkers, exploreMarkerRoot);
 positionMarkersIn(markerRoot, markers);
 positionMarkersIn(exploreMarkerRoot, exploreMarkers);
-renderAltitudeLines(lineRoot, [0, 5, 10, 12, 20, 35, 50, 76, 85, 100, 250, 408, 550, 700, 760]);
+renderAltitudeLines(lineRoot, [0, 5, 10, 12, 20, 35, 50, 60, 70, 76, 85, 100, 250, 408, 550, 700, 760]);
 renderAltitudeLines(exploreLineRoot, [2000, 35786, 100000, 384400], "explore");
 setDocumentHeight();
 const titleCityImage = titleCity?.querySelector(".title-city__skyline");

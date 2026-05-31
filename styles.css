@@ -3,7 +3,16 @@
   --paper: #f5dcc1;
   --peach: #f0b68a;
   --clay: #b7652e;
-  --water: #448490;
+  --water: #e89048;
+  --horizon-glow: rgba(255, 175, 95, 0.22);
+  --city-base-glow: rgba(239, 189, 131, 0.06);
+  --city-haze-strong: rgba(240, 182, 138, 0.03);
+  --city-haze-mid: rgba(240, 182, 138, 0.022);
+  --city-haze-soft: rgba(240, 182, 138, 0.014);
+  --city-haze-faint: rgba(240, 182, 138, 0.007);
+  --skyline-filter: saturate(0.92) contrast(0.97);
+  --star-opacity: 0.1;
+  --star-color: #fff4e5;
   --muted: rgba(255, 244, 229, 0.72);
   --line: rgba(239, 189, 132, 0.22);
   --data: rgba(255, 229, 195, 0.56);
@@ -53,6 +62,7 @@ a {
     #f0b689 98%,
     #f0b68a 100%
   );
+  transition: background 0.9s ease;
 }
 
 .ocean {
@@ -65,22 +75,44 @@ a {
   overflow: hidden;
   pointer-events: none;
   background-color: var(--water);
+  transition: background-color 0.9s ease;
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(0, 0, 0, 0.35) calc(var(--ocean-feather) * 0.45),
-    rgba(0, 0, 0, 0.72) calc(var(--ocean-feather) * 0.78),
-    #000 calc(var(--ocean-feather) * 1.05),
+    rgba(0, 0, 0, 0.1) calc(var(--ocean-feather) * 0.22),
+    rgba(0, 0, 0, 0.28) calc(var(--ocean-feather) * 0.42),
+    rgba(0, 0, 0, 0.48) calc(var(--ocean-feather) * 0.58),
+    rgba(0, 0, 0, 0.68) calc(var(--ocean-feather) * 0.72),
+    rgba(0, 0, 0, 0.84) calc(var(--ocean-feather) * 0.86),
+    rgba(0, 0, 0, 0.94) calc(var(--ocean-feather) * 0.98),
+    #000 calc(var(--ocean-feather) * 1.18),
     #000 100%
   );
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(0, 0, 0, 0.35) calc(var(--ocean-feather) * 0.45),
-    rgba(0, 0, 0, 0.72) calc(var(--ocean-feather) * 0.78),
-    #000 calc(var(--ocean-feather) * 1.05),
+    rgba(0, 0, 0, 0.1) calc(var(--ocean-feather) * 0.22),
+    rgba(0, 0, 0, 0.28) calc(var(--ocean-feather) * 0.42),
+    rgba(0, 0, 0, 0.48) calc(var(--ocean-feather) * 0.58),
+    rgba(0, 0, 0, 0.68) calc(var(--ocean-feather) * 0.72),
+    rgba(0, 0, 0, 0.84) calc(var(--ocean-feather) * 0.86),
+    rgba(0, 0, 0, 0.94) calc(var(--ocean-feather) * 0.98),
+    #000 calc(var(--ocean-feather) * 1.18),
     #000 100%
   );
+}
+
+.ocean::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: calc(var(--ocean-feather) * 1.1);
+  background: linear-gradient(to bottom, var(--horizon-glow), transparent 100%);
+  pointer-events: none;
+  transition: background 0.9s ease;
 }
 
 .title-city {
@@ -100,11 +132,8 @@ a {
   left: 0;
   z-index: 0;
   height: 34%;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(239, 189, 131, 0.06) 100%
-  );
+  background: linear-gradient(to bottom, transparent 0%, var(--city-base-glow) 100%);
+  transition: background 0.9s ease;
 }
 
 .title-city::after {
@@ -117,13 +146,14 @@ a {
   height: calc(45vh + 65%);
   background: linear-gradient(
     to bottom,
-    rgba(240, 182, 138, 0.03) 0%,
-    rgba(240, 182, 138, 0.022) 35%,
-    rgba(240, 182, 138, 0.014) 62%,
-    rgba(240, 182, 138, 0.007) 84%,
+    var(--city-haze-strong) 0%,
+    var(--city-haze-mid) 35%,
+    var(--city-haze-soft) 62%,
+    var(--city-haze-faint) 84%,
     transparent 100%
   );
   pointer-events: none;
+  transition: background 0.9s ease;
 }
 
 .title-city__skyline {
@@ -133,7 +163,10 @@ a {
   width: 100%;
   height: auto;
   opacity: 0.96;
-  filter: saturate(0.92) contrast(0.97);
+  filter: var(--skyline-filter);
+  transition:
+    opacity 0.35s ease,
+    filter 0.9s ease;
 }
 
 .sky::before {
@@ -142,8 +175,9 @@ a {
   inset: 0;
   z-index: -2;
   pointer-events: none;
-  opacity: 0.1;
-  background-image: radial-gradient(circle, #fff4e5 0 0.8px, transparent 1px);
+  opacity: var(--star-opacity);
+  transition: opacity 0.9s ease;
+  background-image: radial-gradient(circle, var(--star-color) 0 0.8px, transparent 1px);
   background-size: 240px 260px;
   background-position: 40px 900px;
 }
@@ -249,6 +283,110 @@ a {
   }
 }
 
+body[data-city-time="dusk"] {
+  --water: #e89048;
+  --horizon-glow: rgba(255, 175, 95, 0.22);
+  --city-base-glow: rgba(239, 189, 131, 0.06);
+  --city-haze-strong: rgba(240, 182, 138, 0.03);
+  --city-haze-mid: rgba(240, 182, 138, 0.022);
+  --city-haze-soft: rgba(240, 182, 138, 0.014);
+  --city-haze-faint: rgba(240, 182, 138, 0.007);
+  --skyline-filter: saturate(0.92) contrast(0.97);
+  --star-opacity: 0.1;
+  --star-color: #fff4e5;
+}
+
+body[data-city-time="day"] {
+  --water: #5cb4cc;
+  --horizon-glow: rgba(200, 240, 235, 0.2);
+  --city-base-glow: rgba(180, 235, 228, 0.05);
+  --city-haze-strong: rgba(200, 240, 235, 0.018);
+  --city-haze-mid: rgba(190, 235, 228, 0.012);
+  --city-haze-soft: rgba(180, 230, 225, 0.007);
+  --city-haze-faint: rgba(170, 225, 220, 0.003);
+  --skyline-filter: saturate(0.94) contrast(0.98) brightness(1.05);
+  --star-opacity: 0.02;
+  --star-color: #ffffff;
+}
+
+body[data-city-time="day"].is-at-surface .altimeter,
+body[data-city-time="day"].is-at-surface .intro {
+  color: #2a5868;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.55);
+}
+
+body[data-city-time="day"].is-at-surface .altimeter__layer {
+  border-color: rgba(80, 150, 170, 0.2);
+  background: rgba(200, 240, 235, 0.4);
+}
+
+body[data-city-time="day"].is-at-surface .music-toggle,
+body[data-city-time="day"].is-at-surface .time-switch {
+  border-color: rgba(80, 150, 170, 0.22);
+  background: rgba(200, 240, 235, 0.5);
+  color: #2a5868;
+  backdrop-filter: blur(10px);
+}
+
+body[data-city-time="day"].is-at-surface .time-switch__btn {
+  color: rgba(42, 88, 104, 0.75);
+}
+
+body[data-city-time="day"].is-at-surface .time-switch__btn.is-active {
+  background: rgba(80, 150, 170, 0.14);
+  color: #2a5868;
+}
+
+body[data-city-time="night"] {
+  --water: #0c141c;
+  --horizon-glow: rgba(70, 90, 130, 0.22);
+  --city-base-glow: rgba(50, 70, 110, 0.08);
+  --city-haze-strong: rgba(60, 80, 120, 0.055);
+  --city-haze-mid: rgba(55, 75, 115, 0.038);
+  --city-haze-soft: rgba(50, 70, 105, 0.022);
+  --city-haze-faint: rgba(45, 65, 95, 0.01);
+  --skyline-filter: saturate(0.88) contrast(1.06) brightness(0.94);
+  --star-opacity: 0.2;
+  --star-color: #dce4f4;
+}
+
+body[data-city-time="night"].is-at-surface .altimeter,
+body[data-city-time="night"].is-at-surface .intro {
+  color: #fff6eb;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+}
+
+body[data-city-time="night"].is-at-surface .altimeter__layer {
+  border-color: rgba(255, 244, 229, 0.28);
+  background: rgba(3, 4, 7, 0.32);
+}
+
+body[data-city-time="night"] .time-switch {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(3, 4, 7, 0.36);
+  color: #fff;
+}
+
+body[data-city-time="night"] .time-switch__btn {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+body[data-city-time="night"] .time-switch__btn:hover {
+  color: #fff;
+}
+
+body[data-city-time="night"] .time-switch__btn.is-active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+body[data-city-time="night"].is-at-surface .music-toggle,
+body[data-city-time="night"].is-at-surface .time-switch {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(3, 4, 7, 0.36);
+  color: #fff;
+}
+
 body.is-at-surface .altimeter {
   color: var(--ink);
   text-shadow: none;
@@ -264,6 +402,30 @@ body.is-at-surface .music-toggle {
   background: rgba(247, 220, 190, 0.78);
   color: var(--ink);
   backdrop-filter: blur(10px);
+}
+
+body.is-at-surface .time-switch {
+  border-color: rgba(37, 22, 15, 0.22);
+  background: rgba(247, 220, 190, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+body.is-at-surface .time-switch__btn {
+  color: rgba(37, 22, 15, 0.72);
+}
+
+body.is-at-surface .time-switch__btn.is-active {
+  background: rgba(37, 22, 15, 0.12);
+  color: var(--ink);
+}
+
+body[data-city-time="night"].is-at-surface .time-switch__btn {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+body[data-city-time="night"].is-at-surface .time-switch__btn.is-active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
 }
 
 .music-toggle {
@@ -317,6 +479,51 @@ body.is-at-surface .music-toggle {
 
 .music-toggle--on .music-toggle__icon {
   opacity: 1;
+}
+
+.time-switch {
+  position: fixed;
+  top: 58px;
+  right: clamp(14px, 3vw, 32px);
+  z-index: 10;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(255, 232, 200, 0.42);
+  border-radius: 999px;
+  background: rgba(3, 4, 7, 0.28);
+  backdrop-filter: blur(6px);
+}
+
+.time-switch__btn {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 244, 229, 0.72);
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.time-switch__btn:hover {
+  color: #fff6eb;
+}
+
+.time-switch__btn.is-active {
+  background: rgba(255, 232, 200, 0.16);
+  color: #fff6eb;
+}
+
+.time-switch__btn:focus-visible {
+  outline: 2px solid rgba(255, 232, 200, 0.85);
+  outline-offset: 2px;
 }
 
 .ambience {

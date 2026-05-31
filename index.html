@@ -22,6 +22,23 @@
       <span class="music-toggle__label">Music off</span>
     </button>
 
+    <div class="time-switch" id="time-switch" role="group" aria-label="City time of day">
+      <button type="button" class="time-switch__btn" data-time="day" aria-pressed="false">
+        Day
+      </button>
+      <button
+        type="button"
+        class="time-switch__btn is-active"
+        data-time="dusk"
+        aria-pressed="true"
+      >
+        Dusk
+      </button>
+      <button type="button" class="time-switch__btn" data-time="night" aria-pressed="false">
+        Night
+      </button>
+    </div>
+
     <audio id="ambience" class="ambience" loop preload="none">
       <source src="audio/meditation.mp3" type="audio/mpeg" />
     </audio>
@@ -40,7 +57,7 @@
       <div id="title-city" class="title-city" aria-hidden="true">
         <img
           class="title-city__skyline"
-          src="images/city.png"
+          src="images/city_background/city_dawn.png"
           alt=""
           width="4228"
           height="1932"
