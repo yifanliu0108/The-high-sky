@@ -7,6 +7,8 @@ const EXPLORE_SCROLL_PX = 14000;
 const TOP_PADDING = 620;
 const FOCUS_RATIO = 0.68;
 
+// --- Atmosphere layer bands (0–760 km) ---
+
 const layers = [
   {
     name: "Troposphere",
@@ -54,6 +56,8 @@ const layers = [
   },
 ];
 
+// --- Deep-space explore section (760 km – Moon) ---
+
 const exploreLayers = [
   {
     name: "Near-Earth space",
@@ -85,7 +89,13 @@ const exploreLayers = [
   },
 ];
 
+// --- Scroll stops: milestones, atmosphere markers, explore markers ---
+
 const milestones = [
+  {
+    alt: 17.5,
+    text: "Twice a day since the 1940s, weather balloons have still been rising here — the oldest daily habit in atmospheric science.",
+  },
   {
     alt: 8.8,
     text: "You have climbed to the height of Mount Everest.",
@@ -137,7 +147,7 @@ const exploreMarkers = [
     alt: 35786,
     side: "right",
     title: "Geostationary orbit",
-    text: "Weather and climate satellites hover here, fixed over one region. Their data feed forecasts, insurance, agriculture, and policy — an economy built on reading the sky.",
+    text: "Weather and climate satellites hover here, fixed over one region. Their images feed forecasts, insurance, agriculture, and evacuation orders — often reaching communities with no other early warning. The view is global; the consequences are local.",
     data: "35,786 km · GOES, Meteosat, Himawari · 24 h orbital period.",
     image: "images/hurricane.jpg",
     imageAlt: "Hurricane from space",
@@ -158,7 +168,7 @@ const exploreMarkers = [
     side: "center",
     offset: -80,
     title: "Earthrise",
-    text: "On Christmas Eve 1968, Bill Anders photographed Earth rising over the lunar horizon — a blue marble in black space. Galen Rowell called it the most influential environmental photo ever taken. It helped spark Earth Day, the EPA, and a global movement to treat the atmosphere as one shared home.",
+    text: "On Christmas Eve 1968, Bill Anders photographed Earth rising over the lunar horizon — a blue marble in black space. Galen Rowell called it the most influential environmental photo ever taken. It did not carry a data table; it changed how millions felt about one shared atmosphere. Images, like numbers, choose their audience.",
     data: "NASA AS08-14-2383 · 384,400 km mean Earth–Moon distance · Apollo 8, 24 Dec 1968.",
     image: "images/earthrise.jpg",
     imageAlt: "The Earthrise photograph taken by Apollo 8",
@@ -173,8 +183,8 @@ const markers = [
     mobileOffset: 220,
     side: "center",
     title: "Sea level",
-    text: "Roughly 8 billion people share this thin shell of air. Most greenhouse gases, soot, and water vapor are added here — from power plants, farms, traffic, forests, and fires.",
-    data: "NASA GISS: global temperature +1.36 °C since 1880 (2024 baseline).",
+    text: "Roughly 8 billion people share this thin shell of air. Most greenhouse gases, soot, and water vapor are added here — from power plants, farms, traffic, forests, and fires. The people most exposed often have the least say in what gets measured, or told.",
+    data: "NASA & NOAA: 2024 ranked warmest year on record · +1.28 °C above NASA’s 1951–1980 baseline.",
     image: "images/shanghai.jpg",
     imageAlt: "Hazy skyline with air pollution near the ground",
     credit: "Lars Plougmann / CC BY-SA 2.0 (Wikimedia Commons)",
@@ -252,8 +262,8 @@ const markers = [
     offset: 160,
     mobileOffset: 120,
     title: "Weather balloon",
-    text: "Twice daily, balloons profile temperature, humidity, pressure, and ozone — building the vertical records that reveal how the atmosphere is changing.",
-    data: "NOAA: ~900 global radiosonde stations since the 1940s.",
+    text: "Twice daily, balloons carry radiosondes through the troposphere and lower stratosphere — building vertical records that satellites still use as ground truth. The technology is humble; the commitment is not. In 2025, some U.S. launch sites cut back on balloon flights even as orbital fleets grew.",
+    data: "NOAA: ~900 global radiosonde stations · balloons reach ~30–35 km before bursting.",
     image: "images/balloon.jpg",
     imageAlt: "Weather balloon carrying a radiosonde instrument",
     credit: "NOAA / public domain (Wikimedia Commons)",
@@ -367,24 +377,38 @@ const markers = [
     alt: 550,
     side: "right",
     title: "Climate satellites",
-    text: "NASA’s Earth Observing System — Terra, Aqua, and others — ride to orbit on rockets like the Delta II. Their data on water, ice, and carbon inform science, economies, and treaties.",
-    data: "Terra launched 1999 · Aqua 2002 on Delta II · data at earthdata.nasa.gov.",
+    text: "In 2006 a Delta II lifted CALIPSO and CloudSat — pencil-thin profiles of clouds from orbit. Today Falcon 9 launches Earth-science instruments and commercial fleets almost weekly. We moved from one balloon over Omaha to a planet watched in real time — but the archive of how air actually feels, mile by mile, still begins on the ground.",
+    data: "NASA Terra 1999 · Falcon 9 era · NASA–NOAA 2024 global temperature assessment.",
     image: "images/climate-satellites.jpg",
     imageAlt: "Delta II rocket launching the CALIPSO and CloudSat climate satellites",
     credit: "NASA / public domain (Wikimedia Commons)",
+  },
+  {
+    alt: 580,
+    side: "left",
+    offset: 50,
+    mobileOffset: 30,
+    title: "Low Earth orbit today",
+    text: "Thousands of satellites now circle near 550 km — hurricane warnings, methane plumes, broadband for remote coasts. SpaceX flew more than 160 missions in 2025; Starship is moving toward routine orbital payload delivery. Researchers also ask what rocket exhaust and re-entry dust do to the ozone layer above. New eyes in the sky, old costs in the air.",
+    data: "SpaceNews · 2025 Starship V3 plans · upper-atmosphere pollution studies (Space.com, 2025).",
+    image: "images/spacex.jpg",
+    imageAlt: "SpaceX Falcon 9 first stage landing on a droneship",
+    credit: "SpaceX / public domain (Wikimedia Commons)",
   },
   {
     alt: 705,
     side: "center",
     offset: 40,
     title: "Earth-observing fleet",
-    text: "NASA and partners measure sea level, ice sheets, methane plumes, forest cover, fires, and Earth's energy budget — turning the sky into a climate laboratory.",
-    data: "NASA: 25+ active Earth science missions · data free at earthdata.nasa.gov.",
+    text: "NASA and partners track sea level, ice sheets, methane plumes, forest cover, fires, and Earth's energy budget — data free at earthdata.nasa.gov. Independent agencies publish separate analyses; when their curves agree, it is harder to look away. That agreement is itself a kind of communication.",
+    data: "NASA: 25+ active Earth science missions · oceans absorb >90% of excess heat (NOAA).",
     image: "images/earth-fleet.jpg",
     imageAlt: "NASA visualization of the Earth observing satellite fleet in orbit",
     credit: "NASA Scientific Visualization Studio (public domain)",
   },
 ];
+
+// --- DOM refs ---
 
 const altitudeValue = document.querySelector("#altitude-value");
 const layerValue = document.querySelector("#layer-value");
@@ -402,6 +426,8 @@ const ocean = document.querySelector("#ocean");
 const titleCity = document.querySelector("#title-city");
 const rocketShip = document.querySelector("#rocket-ship");
 const skyGradient = document.querySelector("#sky-gradient");
+
+// --- Sky gradient & Day/Dusk/Night themes ---
 
 const SKY_GRADIENT_STOPS = [
   { km: EXPLORE_TOP_KM, color: "#000000" },
@@ -466,7 +492,7 @@ const CITY_TIME_THEMES = {
   },
   dusk: {
     label: "Dusk",
-    image: "images/city_background/city_dawn.png",
+    image: "images/city_background/city_dusk.png",
     skyStops: {
       0: "#f0b68a",
       1: "#f0b68a",
@@ -577,6 +603,8 @@ function setCityTime(time, { persist = true } = {}) {
   updateAltimeter();
 }
 
+// --- Scroll distance ↔ altitude ---
+
 function atmosphereDistance(km) {
   if (km <= 12) {
     return km * 440;
@@ -667,6 +695,8 @@ function activeLayer(km) {
 
   return layers.find((layer) => km >= layer.start && km < layer.end) || layers.at(-1);
 }
+
+// --- Render & layout ---
 
 function markerFigure(item) {
   if (!item.image) {
@@ -923,6 +953,8 @@ function scrollToInitialAltitude() {
   scrollToAltitude(km);
 }
 
+// --- Music & time-of-day UI ---
+
 const musicToggle = document.querySelector("#music-toggle");
 const ambience = document.querySelector("#ambience");
 const musicLabel = musicToggle.querySelector(".music-toggle__label");
@@ -969,6 +1001,8 @@ timeSwitchButtons.forEach((button) => {
   });
 });
 
+// --- Bootstrap ---
+
 const savedCityTime = localStorage.getItem(CITY_TIME_STORAGE_KEY);
 const normalizedCityTime = savedCityTime === "dawn" ? "dusk" : savedCityTime;
 
@@ -986,7 +1020,7 @@ renderMarkers(markers, markerRoot);
 renderMarkers(exploreMarkers, exploreMarkerRoot);
 positionMarkersIn(markerRoot, markers);
 positionMarkersIn(exploreMarkerRoot, exploreMarkers);
-renderAltitudeLines(lineRoot, [0, 5, 10, 12, 20, 35, 50, 60, 70, 76, 85, 100, 250, 408, 550, 700, 760]);
+renderAltitudeLines(lineRoot, [0, 5, 10, 12, 20, 35, 50, 60, 70, 76, 85, 100, 250, 408, 550, 580, 700, 760]);
 renderAltitudeLines(exploreLineRoot, [2000, 35786, 100000, 384400], "explore");
 setDocumentHeight();
 const titleCityImage = titleCity?.querySelector(".title-city__skyline");
