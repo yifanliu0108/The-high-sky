@@ -1,9 +1,12 @@
 :root {
-  --ink: #0c1520;
-  --paper: #f6f0e4;
-  --muted: rgba(255, 255, 255, 0.72);
-  --line: rgba(255, 255, 255, 0.2);
-  --data: rgba(255, 255, 255, 0.55);
+  --ink: #25160f;
+  --paper: #f5dcc1;
+  --peach: #f0b68a;
+  --clay: #b7652e;
+  --water: #448490;
+  --muted: rgba(255, 244, 229, 0.72);
+  --line: rgba(239, 189, 132, 0.22);
+  --data: rgba(255, 229, 195, 0.56);
 }
 
 * {
@@ -17,8 +20,8 @@ html {
 body {
   margin: 0;
   overflow-x: hidden;
-  background: #04060c;
-  color: #fff;
+  background: #030407;
+  color: #fff6eb;
   font-family:
     "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
   font-size: 16px;
@@ -42,11 +45,95 @@ a {
   background: linear-gradient(
     to bottom,
     #000000 0%,
-    #0a1020 20%,
-    #2a5070 50%,
-    #c8dde4 85%,
-    #e8c878 100%
+    #08101c 22%,
+    #284e62 52%,
+    #b87858 80%,
+    #e7a578 88%,
+    #efb686 94%,
+    #f0b689 98%,
+    #f0b68a 100%
   );
+}
+
+.ocean {
+  --ocean-feather: 120px;
+
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--water);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) calc(var(--ocean-feather) * 0.45),
+    rgba(0, 0, 0, 0.72) calc(var(--ocean-feather) * 0.78),
+    #000 calc(var(--ocean-feather) * 1.05),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) calc(var(--ocean-feather) * 0.45),
+    rgba(0, 0, 0, 0.72) calc(var(--ocean-feather) * 0.78),
+    #000 calc(var(--ocean-feather) * 1.05),
+    #000 100%
+  );
+}
+
+.title-city {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.title-city::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 34%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(239, 189, 131, 0.06) 100%
+  );
+}
+
+.title-city::after {
+  content: "";
+  position: absolute;
+  top: -45vh;
+  right: 0;
+  left: 0;
+  z-index: 3;
+  height: calc(45vh + 65%);
+  background: linear-gradient(
+    to bottom,
+    rgba(240, 182, 138, 0.03) 0%,
+    rgba(240, 182, 138, 0.022) 35%,
+    rgba(240, 182, 138, 0.014) 62%,
+    rgba(240, 182, 138, 0.007) 84%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.title-city__skyline {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.96;
+  filter: saturate(0.92) contrast(0.97);
 }
 
 .sky::before {
@@ -55,17 +142,17 @@ a {
   inset: 0;
   z-index: -2;
   pointer-events: none;
-  opacity: 0.14;
-  background-image: radial-gradient(circle, #fff 0 0.8px, transparent 1px);
-  background-size: 220px 240px;
+  opacity: 0.1;
+  background-image: radial-gradient(circle, #fff4e5 0 0.8px, transparent 1px);
+  background-size: 240px 260px;
   background-position: 40px 900px;
 }
 
 .intro {
   position: absolute;
   left: 50%;
-  z-index: 4;
-  width: min(640px, calc(100vw - 32px));
+  z-index: 5;
+  width: min(600px, calc(100vw - 32px));
   transform: translateX(-50%);
   color: var(--ink);
   text-align: center;
@@ -84,10 +171,10 @@ a {
 
 .intro h1 {
   margin: 0;
-  font-size: clamp(2.5rem, 9.5vw, 6.5rem);
+  font-size: 5.6rem;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 
@@ -98,7 +185,7 @@ a {
 
 .intro__line {
   margin: 0;
-  font-size: clamp(0.95rem, 1.75vw, 1.08rem);
+  font-size: 1rem;
   line-height: 1.65;
   font-weight: 400;
   opacity: 0.9;
@@ -110,7 +197,7 @@ a {
 
 .intro__music {
   margin: 1.1em 0 0;
-  font-size: clamp(0.82rem, 1.45vw, 0.94rem);
+  font-size: 0.9rem;
   line-height: 1.55;
   font-style: italic;
   opacity: 0.65;
@@ -122,7 +209,7 @@ a {
 
 @media (max-height: 720px) {
   .intro h1 {
-    font-size: clamp(2.2rem, 8.5vw, 4.5rem);
+    font-size: 4.5rem;
   }
 
   .intro__lede {
@@ -167,9 +254,14 @@ body.is-at-surface .altimeter {
   text-shadow: none;
 }
 
+body.is-at-surface .altimeter__layer {
+  border-color: rgba(37, 22, 15, 0.3);
+  background: rgba(247, 220, 190, 0.36);
+}
+
 body.is-at-surface .music-toggle {
-  border-color: rgba(12, 21, 32, 0.28);
-  background: rgba(246, 240, 228, 0.75);
+  border-color: rgba(37, 22, 15, 0.28);
+  background: rgba(247, 220, 190, 0.78);
   color: var(--ink);
   backdrop-filter: blur(10px);
 }
@@ -183,10 +275,10 @@ body.is-at-surface .music-toggle {
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 232, 200, 0.42);
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.25);
-  color: #fff;
+  background: rgba(3, 4, 7, 0.28);
+  color: #fff6eb;
   font: inherit;
   font-size: 0.72rem;
   font-weight: 600;
@@ -200,12 +292,12 @@ body.is-at-surface .music-toggle {
 }
 
 .music-toggle:hover {
-  border-color: rgba(255, 255, 255, 0.75);
-  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 232, 200, 0.7);
+  background: rgba(3, 4, 7, 0.42);
 }
 
 .music-toggle:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline: 2px solid rgba(255, 232, 200, 0.85);
   outline-offset: 3px;
 }
 
@@ -219,8 +311,8 @@ body.is-at-surface .music-toggle {
 }
 
 .music-toggle--on {
-  border-color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 232, 200, 0.7);
+  background: rgba(255, 232, 200, 0.12);
 }
 
 .music-toggle--on .music-toggle__icon {
@@ -236,7 +328,7 @@ body.is-at-surface .music-toggle {
   top: 22px;
   left: clamp(14px, 3vw, 32px);
   z-index: 10;
-  color: #fff;
+  color: #fff6eb;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }
 
@@ -252,7 +344,7 @@ body.is-at-surface .music-toggle {
 }
 
 .altimeter__value {
-  font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+  font-size: 2.4rem;
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -276,7 +368,7 @@ body.is-at-surface .music-toggle {
   display: inline-block;
   margin-top: 10px;
   padding: 3px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 232, 200, 0.42);
   border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 600;
@@ -287,7 +379,7 @@ body.is-at-surface .music-toggle {
   right: 0;
   left: 0;
   z-index: 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(255, 232, 200, 0.14);
   pointer-events: none;
 }
 
@@ -297,7 +389,7 @@ body.is-at-surface .music-toggle {
   left: 50%;
   width: min(90vw, 780px);
   transform: translate(-50%, -50%);
-  color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 232, 200, 0.15);
   text-align: center;
   text-transform: uppercase;
   pointer-events: none;
@@ -305,10 +397,10 @@ body.is-at-surface .music-toggle {
 
 .layer-band__name {
   display: block;
-  font-size: clamp(2.4rem, 7vw, 6.5rem);
+  font-size: 5.4rem;
   font-weight: 700;
   line-height: 0.92;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 .layer-band__range {
@@ -319,12 +411,18 @@ body.is-at-surface .music-toggle {
   letter-spacing: 0.1em;
 }
 
+.altitude-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
 .altitude-line {
   position: absolute;
   right: 0;
   left: 0;
   z-index: 1;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(239, 189, 132, 0.22);
   pointer-events: none;
 }
 
@@ -334,11 +432,50 @@ body.is-at-surface .music-toggle {
   left: max(12px, 2.5vw);
   padding: 1px 6px;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(37, 22, 15, 0.2);
   color: var(--muted);
   font-size: 0.68rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+
+.altitude-line--major {
+  border-top: 1px solid rgba(255, 244, 229, 0.46);
+  box-shadow: 0 0 18px rgba(255, 244, 229, 0.07);
+}
+
+.altitude-line--major span {
+  background: rgba(37, 22, 15, 0.34);
+  color: rgba(255, 244, 229, 0.9);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.altitude-line--sea-level {
+  z-index: 4;
+  border-top: 1.5px solid rgba(255, 244, 229, 0.72);
+  box-shadow:
+    0 1px 0 rgba(37, 22, 15, 0.12),
+    0 0 24px rgba(255, 244, 229, 0.14);
+}
+
+.altitude-line--sea-level span {
+  background: rgba(37, 22, 15, 0.42);
+  color: rgba(255, 244, 229, 0.96);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.altitude-line--explore {
+  border-top: 1px dashed rgba(255, 232, 200, 0.28);
+}
+
+.altitude-line--explore span {
+  background: rgba(3, 4, 7, 0.34);
+  color: rgba(255, 232, 200, 0.52);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
 }
 
 .milestones {
@@ -354,8 +491,8 @@ body.is-at-surface .music-toggle {
   width: min(520px, calc(100vw - 48px));
   margin: 0;
   transform: translate(-50%, -50%);
-  color: rgba(255, 255, 255, 0.42);
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: rgba(255, 232, 200, 0.42);
+  font-size: 1.05rem;
   font-style: italic;
   font-weight: 400;
   line-height: 1.45;
@@ -412,8 +549,9 @@ body.is-at-surface .music-toggle {
   width: 100%;
   height: auto;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.15);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 229, 195, 0.16);
+  background: rgba(37, 22, 15, 0.15);
+  box-shadow: 0 2px 18px rgba(37, 22, 15, 0.24);
 }
 
 .marker__credit {
@@ -426,10 +564,10 @@ body.is-at-surface .music-toggle {
 
 .marker h2 {
   margin: 0 0 8px;
-  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  font-size: 1.35rem;
   font-weight: 700;
   line-height: 1.15;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 .marker--sea-level h2 {
@@ -438,7 +576,7 @@ body.is-at-surface .music-toggle {
 
 .marker__text {
   margin: 0;
-  font-size: clamp(0.84rem, 1.15vw, 0.94rem);
+  font-size: 0.9rem;
   line-height: 1.5;
   font-weight: 400;
   color: var(--muted);
@@ -446,7 +584,7 @@ body.is-at-surface .music-toggle {
 
 .marker--sea-level .marker__text,
 .marker--sea-level .marker__data {
-  color: rgba(12, 21, 32, 0.82);
+  color: rgba(37, 22, 15, 0.82);
 }
 
 .marker__data {
@@ -473,16 +611,16 @@ body.is-at-surface .music-toggle {
 
 .ending h2 {
   margin: 0;
-  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-size: 4rem;
   font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .ending p:not(.ending__continue) {
   max-width: 540px;
   margin: 16px auto 0;
-  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
   color: var(--muted);
@@ -495,7 +633,7 @@ body.is-at-surface .music-toggle {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 232, 200, 0.55);
 }
 
 .explore-bands {
@@ -558,8 +696,8 @@ body.is-at-surface .music-toggle {
   justify-content: center;
   gap: 8px 16px;
   padding: 22px 16px 28px;
-  background: #03050a;
-  color: rgba(255, 255, 255, 0.65);
+  background: #030407;
+  color: rgba(255, 232, 200, 0.64);
   font-size: 0.78rem;
   font-weight: 500;
 }
@@ -574,12 +712,33 @@ body.is-at-surface .music-toggle {
 }
 
 .sources a:hover {
-  color: #fff;
+  color: #fff6eb;
 }
 
 @media (max-width: 760px) {
+  .intro h1 {
+    font-size: 3.2rem;
+  }
+
+  .intro__lede {
+    margin-top: 16px;
+  }
+
+  .intro__line {
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .intro__music {
+    font-size: 0.82rem;
+  }
+
   .altimeter__layer {
     display: none;
+  }
+
+  .altimeter__value {
+    font-size: 1.75rem;
   }
 
   .marker,
@@ -609,6 +768,14 @@ body.is-at-surface .music-toggle {
 
   .milestone {
     font-size: 0.9rem;
+  }
+
+  .layer-band__name {
+    font-size: 3.2rem;
+  }
+
+  .ending h2 {
+    font-size: 2.7rem;
   }
 }
 

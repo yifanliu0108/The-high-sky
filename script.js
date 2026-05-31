@@ -10,7 +10,7 @@ const layers = [
     range: "0–12 km",
     start: 0,
     end: 12,
-    gradient: "linear-gradient(to bottom, rgba(72,140,175,0.08), rgba(255,255,255,0.03))",
+    gradient: "linear-gradient(to bottom, rgba(200,130,82,0.05), rgba(240,182,138,0.04))",
   },
   {
     name: "Stratosphere",
@@ -18,7 +18,7 @@ const layers = [
     start: 12,
     end: 50,
     labelTop: "28%",
-    gradient: "linear-gradient(to bottom, rgba(72,88,150,0.1), rgba(55,120,175,0.06))",
+    gradient: "linear-gradient(to bottom, rgba(130,173,177,0.05), rgba(184,200,180,0.03))",
   },
   {
     name: "Mesosphere",
@@ -111,7 +111,7 @@ const milestones = [
 const exploreMarkers = [
   {
     alt: 900,
-    side: "right",
+    side: "left",
     offset: 480,
     mobileOffset: 400,
     title: "Saturn V · Apollo 8",
@@ -176,8 +176,8 @@ const markers = [
   },
   {
     alt: 2.6,
-    offset: 140,
-    mobileOffset: 100,
+    offset: -40,
+    mobileOffset: -20,
     side: "left",
     title: "Urban heat islands",
     text: "Concrete, asphalt, and exhaust hold warmth after sunset. As the baseline climate warms, heat waves stress bodies, crops, transit, and power grids.",
@@ -188,6 +188,8 @@ const markers = [
   },
   {
     alt: 2,
+    offset: -260,
+    mobileOffset: -170,
     side: "right",
     title: "Emissions at the surface",
     text: "Carbon dioxide, methane, and black carbon rise from industry and land use before winds mix them through the troposphere — the weather layer.",
@@ -367,22 +369,41 @@ const lineRoot = document.querySelector("#altitude-lines");
 const exploreLineRoot = document.querySelector("#explore-lines");
 const ending = document.querySelector("#ending");
 const intro = document.querySelector(".intro");
+const ocean = document.querySelector("#ocean");
+const titleCity = document.querySelector("#title-city");
 const rocketShip = document.querySelector("#rocket-ship");
 const skyGradient = document.querySelector("#sky-gradient");
 
 const SKY_GRADIENT_STOPS = [
   { km: EXPLORE_TOP_KM, color: "#000000" },
   { km: 120000, color: "#020306" },
-  { km: 30000, color: "#04060e" },
-  { km: 5000, color: "#070b16" },
-  { km: ATMOSPHERE_TOP_KM, color: "#0c1222" },
-  { km: 700, color: "#101a2e" },
-  { km: 550, color: "#162438" },
-  { km: 350, color: "#1e3350" },
-  { km: 100, color: "#356080" },
-  { km: 50, color: "#5a8ea8" },
-  { km: 12, color: "#9ec5d8" },
-  { km: 0, color: "#e8c878" },
+  { km: 30000, color: "#04070f" },
+  { km: 5000, color: "#07101a" },
+  { km: ATMOSPHERE_TOP_KM, color: "#0d1422" },
+  { km: 700, color: "#121b2b" },
+  { km: 550, color: "#1a2838" },
+  { km: 350, color: "#27465b" },
+  { km: 100, color: "#4f7f91" },
+  { km: 50, color: "#7a8a88" },
+  { km: 40, color: "#8a7878" },
+  { km: 30, color: "#9a7468" },
+  { km: 22, color: "#a87062" },
+  { km: 16, color: "#b87858" },
+  { km: 12, color: "#d58a64" },
+  { km: 11, color: "#da916a" },
+  { km: 10, color: "#df986f" },
+  { km: 9, color: "#e39f74" },
+  { km: 8, color: "#e7a578" },
+  { km: 7, color: "#eaab7c" },
+  { km: 6, color: "#ecb07f" },
+  { km: 5, color: "#edb382" },
+  { km: 4, color: "#eeb584" },
+  { km: 3, color: "#efb686" },
+  { km: 2.5, color: "#f0b688" },
+  { km: 2, color: "#f0b689" },
+  { km: 1.5, color: "#f0b68a" },
+  { km: 1, color: "#f0b68a" },
+  { km: 0, color: "#f0b68a" },
 ];
 
 function atmosphereDistance(km) {
@@ -537,8 +558,11 @@ function buildSkyGradient() {
     const y = altitudeToY(km);
     const percent = Math.max(0, Math.min(100, (y / height) * 100));
 
-    return `${color} ${percent.toFixed(1)}%`;
-  }).join(", ");
+    return { color, percent };
+  })
+    .sort((a, b) => a.percent - b.percent)
+    .map(({ color, percent }) => `${color} ${percent.toFixed(1)}%`)
+    .join(", ");
 
   skyGradient.style.background = `linear-gradient(to bottom, ${stops})`;
 }
@@ -579,10 +603,22 @@ function markerOffset(item) {
   return item.offset || 0;
 }
 
-function renderAltitudeLines(root, alts) {
+function renderAltitudeLines(root, alts, variant = "atmosphere") {
+  const majorAlts = new Set([12, 50, 76, 100, 760]);
+
   alts.forEach((alt) => {
     const line = document.createElement("div");
-    line.className = "altitude-line";
+    let variantClass = "";
+
+    if (alt === 0) {
+      variantClass = " altitude-line--sea-level";
+    } else if (variant === "explore") {
+      variantClass = " altitude-line--explore";
+    } else if (majorAlts.has(alt)) {
+      variantClass = " altitude-line--major";
+    }
+
+    line.className = `altitude-line${variantClass}`;
     line.style.top = `${altitudeToY(alt)}px`;
     line.innerHTML = `<span>${formatAlt(alt)} km</span>`;
     root.appendChild(line);
@@ -596,9 +632,36 @@ function setDocumentHeight() {
 
   sky.style.height = `${total}px`;
   positionIntro();
+  positionOcean();
+  positionTitleCity();
   ending.style.top = `${Math.max(96, altitudeToY(ATMOSPHERE_TOP_KM) - 520)}px`;
 
   buildSkyGradient();
+}
+
+function positionOcean() {
+  if (!ocean) {
+    return;
+  }
+
+  const seaY = altitudeToY(0);
+  const feather = Math.min(180, Math.max(96, window.innerHeight * 0.14));
+
+  ocean.style.setProperty("--ocean-feather", `${feather}px`);
+  ocean.style.top = `${seaY - feather}px`;
+  ocean.style.height = `${sky.offsetHeight - seaY + feather}px`;
+}
+
+function positionTitleCity() {
+  if (!titleCity) {
+    return;
+  }
+
+  const seaY = altitudeToY(0);
+  const skyline = titleCity.querySelector(".title-city__skyline");
+  const skylineHeight = skyline?.offsetHeight || titleCity.offsetHeight;
+
+  titleCity.style.top = `${seaY - skylineHeight}px`;
 }
 
 function positionIntro() {
@@ -606,19 +669,11 @@ function positionIntro() {
     return;
   }
 
-  const seaLevel = altitudeToY(0);
-  const vh = window.innerHeight;
-  const scrollAtZero = seaLevel - vh * FOCUS_RATIO;
-  const topInset = window.innerWidth <= 760 ? 56 : 72;
-  const bottomGap = 48;
-  const zoneTop = scrollAtZero + topInset;
-  const zoneBottom = seaLevel - bottomGap;
+  const introAlt = 1.5;
   const introHeight = intro.offsetHeight;
+  const introCenterY = altitudeToY(introAlt);
 
-  let introTop = zoneTop + Math.max(0, (zoneBottom - zoneTop - introHeight) / 2);
-
-  introTop = Math.max(zoneTop, Math.min(introTop, zoneBottom - introHeight));
-  intro.style.top = `${introTop}px`;
+  intro.style.top = `${introCenterY - introHeight / 2}px`;
 }
 
 function updateRocket(km) {
@@ -652,7 +707,7 @@ function updateAltimeter() {
   document.body.classList.toggle("is-at-surface", km < 4);
 
   if (intro) {
-    const introFade = km < 0.6 ? 1 : Math.max(0, 1 - (km - 0.6) / 1.4);
+    const introFade = km < 2 ? 1 : Math.max(0, 1 - (km - 2) / 1);
 
     intro.style.opacity = String(introFade);
     intro.style.visibility = introFade > 0.05 ? "visible" : "hidden";
@@ -734,8 +789,15 @@ renderMarkers(exploreMarkers, exploreMarkerRoot);
 positionMarkersIn(markerRoot, markers);
 positionMarkersIn(exploreMarkerRoot, exploreMarkers);
 renderAltitudeLines(lineRoot, [0, 5, 10, 12, 20, 35, 50, 76, 85, 100, 250, 408, 550, 700, 760]);
-renderAltitudeLines(exploreLineRoot, [2000, 35786, 100000, 384400]);
+renderAltitudeLines(exploreLineRoot, [2000, 35786, 100000, 384400], "explore");
 setDocumentHeight();
+const titleCityImage = titleCity?.querySelector(".title-city__skyline");
+if (titleCityImage instanceof HTMLImageElement && !titleCityImage.complete) {
+  titleCityImage.addEventListener("load", () => {
+    positionTitleCity();
+    positionIntro();
+  });
+}
 requestAnimationFrame(() => {
   positionIntro();
   scrollToInitialAltitude();
