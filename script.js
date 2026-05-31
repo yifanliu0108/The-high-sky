@@ -1,4 +1,6 @@
-const CLIMB_TOP_KM = 760;
+const ATMOSPHERE_TOP_KM = 760;
+const EXPLORE_TOP_KM = 384400;
+const EXPLORE_SCROLL_PX = 14000;
 const TOP_PADDING = 620;
 const FOCUS_RATIO = 0.68;
 
@@ -15,6 +17,7 @@ const layers = [
     range: "12–50 km",
     start: 12,
     end: 50,
+    labelTop: "28%",
     gradient: "linear-gradient(to bottom, rgba(72,88,150,0.1), rgba(55,120,175,0.06))",
   },
   {
@@ -26,17 +29,55 @@ const layers = [
   },
   {
     name: "Thermosphere",
-    range: "85–700 km",
+    range: "85–550 km",
     start: 85,
+    end: 550,
+    gradient: "linear-gradient(to bottom, rgba(4,6,14,0.22), rgba(12,18,40,0.1))",
+  },
+  {
+    name: "Upper thermosphere",
+    range: "550–700 km",
+    start: 550,
     end: 700,
-    gradient: "linear-gradient(to bottom, rgba(4,6,14,0.35), rgba(14,20,48,0.1))",
+    gradient: "linear-gradient(to bottom, rgba(8,12,28,0.14), rgba(6,10,24,0.12))",
   },
   {
     name: "Exosphere",
-    range: "700+ km",
+    range: "700–760 km",
     start: 700,
-    end: CLIMB_TOP_KM,
-    gradient: "linear-gradient(to bottom, rgba(3,4,10,0.4), rgba(1,2,6,0.65))",
+    end: ATMOSPHERE_TOP_KM,
+    gradient: "linear-gradient(to bottom, rgba(5,8,18,0.12), rgba(3,5,14,0.1))",
+  },
+];
+
+const exploreLayers = [
+  {
+    name: "Near-Earth space",
+    range: "760–2,000 km",
+    start: 760,
+    end: 2000,
+    gradient: "linear-gradient(to bottom, rgba(4,6,14,0.1), rgba(3,5,12,0.08))",
+  },
+  {
+    name: "Radiation belts",
+    range: "2,000–35,000 km",
+    start: 2000,
+    end: 35000,
+    gradient: "linear-gradient(to bottom, rgba(3,5,12,0.1), rgba(2,4,10,0.08))",
+  },
+  {
+    name: "High orbit",
+    range: "35,000–100,000 km",
+    start: 35000,
+    end: 100000,
+    gradient: "linear-gradient(to bottom, rgba(2,3,8,0.12), rgba(1,2,6,0.1))",
+  },
+  {
+    name: "Cislunar space",
+    range: "100,000–384,400 km",
+    start: 100000,
+    end: EXPLORE_TOP_KM,
+    gradient: "linear-gradient(to bottom, rgba(1,2,5,0.14), rgba(0,0,0,0.18))",
   },
 ];
 
@@ -46,23 +87,85 @@ const milestones = [
     text: "You have climbed to the height of Mount Everest.",
   },
   {
-    alt: 12,
+    alt: 11.2,
+    offsetX: 120,
+    offset: -50,
     text: "Most weather, rain, and storms live below this line.",
   },
   {
-    alt: 100,
+    alt: 99.5,
+    offsetX: 110,
     text: "The Kármán line — where space begins for many agencies.",
   },
   {
-    alt: 408,
+    alt: 406,
     text: "The International Space Station orbits near here.",
+  },
+  {
+    alt: 755,
+    offset: -200,
+    text: "The exosphere ends here — like the ocean floor in The Deep Sea. A Saturn V waits to go farther.",
+  },
+];
+
+const exploreMarkers = [
+  {
+    alt: 900,
+    side: "right",
+    offset: 480,
+    mobileOffset: 400,
+    title: "Saturn V · Apollo 8",
+    text: "On 21 December 1968, the Saturn V carried the first humans to leave Earth’s orbit. In minutes they cleared the last breathable air — technology carrying biology into the dark.",
+    data: "Launch: Kennedy Space Center · Crew: Borman, Lovell, Anders · Mission: lunar orbit.",
+  },
+  {
+    alt: 2000,
+    side: "left",
+    title: "Van Allen belts",
+    text: "Radiation zones discovered in 1958. Apollo 8 passed through them on the way to the Moon — a reminder that leaving the atmosphere does not mean leaving Earth’s influence.",
+    data: "Explorer 1 · inner belt ~600–6,000 km · shapes satellite design and human flight paths.",
+    image: "images/limb.jpg",
+    imageAlt: "Earth's limb from orbit",
+    credit: "NASA / ISS Expedition 51",
+  },
+  {
+    alt: 35786,
+    side: "right",
+    title: "Geostationary orbit",
+    text: "Weather and climate satellites hover here, fixed over one region. Their data feed forecasts, insurance, agriculture, and policy — an economy built on reading the sky.",
+    data: "35,786 km · GOES, Meteosat, Himawari · 24 h orbital period.",
+    image: "images/hurricane.jpg",
+    imageAlt: "Hurricane from space",
+    credit: "NASA / ISS Crew Earth Observations",
+  },
+  {
+    alt: 150000,
+    side: "left",
+    title: "Outbound to the Moon",
+    text: "Apollo 8 coasted through this void for three days. Humans watched Earth shrink — industry, forests, and oceans becoming one system, without borders visible from here.",
+    data: "Translunar injection · Dec 1968 · ~240,000 mi to lunar orbit.",
+    image: "images/limb.jpg",
+    imageAlt: "Earth from deep space",
+    credit: "NASA / ISS Expedition 51",
+  },
+  {
+    alt: 384400,
+    side: "center",
+    offset: -80,
+    title: "Earthrise",
+    text: "On Christmas Eve 1968, Bill Anders photographed Earth rising over the lunar horizon — a blue marble in black space. Galen Rowell called it the most influential environmental photo ever taken. It helped spark Earth Day, the EPA, and a global movement to treat the atmosphere as one shared home.",
+    data: "NASA AS08-14-2383 · 384,400 km mean Earth–Moon distance · Apollo 8, 24 Dec 1968.",
+    image: "images/earthrise.jpg",
+    imageAlt: "The Earthrise photograph taken by Apollo 8",
+    credit: "NASA / Bill Anders, Apollo 8 (public domain)",
   },
 ];
 
 const markers = [
   {
     alt: 0,
-    offset: 52,
+    offset: 260,
+    mobileOffset: 220,
     side: "center",
     title: "Sea level",
     text: "Roughly 8 billion people share this thin shell of air. Most greenhouse gases, soot, and water vapor are added here — from power plants, farms, traffic, forests, and fires.",
@@ -72,9 +175,9 @@ const markers = [
     credit: "Lars Plougmann / CC BY-SA 2.0 (Wikimedia Commons)",
   },
   {
-    alt: 1.4,
-    offset: -220,
-    mobileOffset: -300,
+    alt: 2.6,
+    offset: 140,
+    mobileOffset: 100,
     side: "left",
     title: "Urban heat islands",
     text: "Concrete, asphalt, and exhaust hold warmth after sunset. As the baseline climate warms, heat waves stress bodies, crops, transit, and power grids.",
@@ -114,8 +217,9 @@ const markers = [
     credit: "Luca Galuzzi / CC BY-SA 2.5 (Wikimedia Commons)",
   },
   {
-    alt: 10.7,
-    side: "right",
+    alt: 10.2,
+    side: "center",
+    offset: -40,
     title: "Cruising altitude",
     text: "Jet traffic cruises near the top of weather. Aviation adds CO₂; some contrails trap extra heat — a technology footprint written across the sky.",
     data: "Typical cruise: ~10–12 km · ~900 km/h ground speed.",
@@ -124,18 +228,22 @@ const markers = [
     credit: "U.S. Air Force / public domain (Wikimedia Commons)",
   },
   {
-    alt: 12,
-    side: "center",
+    alt: 12.5,
+    side: "right",
+    offset: 40,
+    mobileOffset: 20,
     title: "Tropopause",
-    text: "The boundary where turbulent weather gives way to the calm stratosphere. Climate models show this ceiling rising as the lower atmosphere warms.",
+    text: "The boundary where turbulent weather gives way to the calm stratosphere. Storm clouds flatten into anvils here as rising air hits the ceiling. Climate models show this level rising as the lower atmosphere warms.",
     data: "NASA Earth Observatory: tropopause height varies with latitude and season.",
-    image: "images/limb.jpg",
-    imageAlt: "Earth's limb with thin blue atmosphere from orbit",
-    credit: "NASA / ISS Expedition 51",
+    image: "images/tropopause.jpg",
+    imageAlt: "Cumulonimbus storm with a flat anvil top at the tropopause",
+    credit: "NASA / ISS Crew Earth Observations (public domain)",
   },
   {
-    alt: 18,
+    alt: 17.5,
     side: "left",
+    offset: 160,
+    mobileOffset: 120,
     title: "Weather balloon",
     text: "Twice daily, balloons profile temperature, humidity, pressure, and ozone — building the vertical records that reveal how the atmosphere is changing.",
     data: "NOAA: ~900 global radiosonde stations since the 1940s.",
@@ -216,6 +324,7 @@ const markers = [
   {
     alt: 408,
     side: "left",
+    offset: 60,
     title: "International Space Station",
     text: "Crews watch smoke plumes, hurricanes, drought, city lights, and shrinking ice — human observers above a planet whose climate is being rewritten below.",
     data: "ISS orbit: ~408 km · ~90 min per revolution · NASA expeditions since 2000.",
@@ -226,16 +335,17 @@ const markers = [
   {
     alt: 550,
     side: "right",
-    title: "Commercial constellations",
-    text: "Thousands of Starlink and other satellites operate in low Earth orbit — a new layer of human technology between weather and deep space.",
-    data: "SpaceX Starlink shells: ~340–550 km (FCC filings, 2024).",
-    image: "images/spacex.jpg",
-    imageAlt: "SpaceX Falcon 9 at Vandenberg Air Force Base",
-    credit: "SpaceX / public domain (Wikimedia Commons)",
+    title: "Climate satellites",
+    text: "NASA’s Earth Observing System — Terra, Aqua, and others — ride to orbit on rockets like the Delta II. Their data on water, ice, and carbon inform science, economies, and treaties.",
+    data: "Terra launched 1999 · Aqua 2002 on Delta II · data at earthdata.nasa.gov.",
+    image: "images/terra.jpg",
+    imageAlt: "Earth surface imaged by NASA Terra satellite",
+    credit: "NASA Terra (EOS AM-1) / Wikimedia Commons",
   },
   {
     alt: 705,
     side: "center",
+    offset: 40,
     title: "Earth-observing fleet",
     text: "NASA and partners measure sea level, ice sheets, methane plumes, forest cover, fires, and Earth's energy budget — turning the sky into a climate laboratory.",
     data: "NASA: 25+ active Earth science missions · data free at earthdata.nasa.gov.",
@@ -249,13 +359,33 @@ const altitudeValue = document.querySelector("#altitude-value");
 const layerValue = document.querySelector("#layer-value");
 const sky = document.querySelector("#sky");
 const markerRoot = document.querySelector("#markers");
+const exploreMarkerRoot = document.querySelector("#explore-markers");
 const milestoneRoot = document.querySelector("#milestones");
 const layerRoot = document.querySelector("#layer-bands");
+const exploreLayerRoot = document.querySelector("#explore-bands");
 const lineRoot = document.querySelector("#altitude-lines");
+const exploreLineRoot = document.querySelector("#explore-lines");
 const ending = document.querySelector("#ending");
 const intro = document.querySelector(".intro");
+const rocketShip = document.querySelector("#rocket-ship");
+const skyGradient = document.querySelector("#sky-gradient");
 
-function altitudeDistance(km) {
+const SKY_GRADIENT_STOPS = [
+  { km: EXPLORE_TOP_KM, color: "#000000" },
+  { km: 120000, color: "#020306" },
+  { km: 30000, color: "#04060e" },
+  { km: 5000, color: "#070b16" },
+  { km: ATMOSPHERE_TOP_KM, color: "#0c1222" },
+  { km: 700, color: "#101a2e" },
+  { km: 550, color: "#162438" },
+  { km: 350, color: "#1e3350" },
+  { km: 100, color: "#356080" },
+  { km: 50, color: "#5a8ea8" },
+  { km: 12, color: "#9ec5d8" },
+  { km: 0, color: "#e8c878" },
+];
+
+function atmosphereDistance(km) {
   if (km <= 12) {
     return km * 440;
   }
@@ -268,29 +398,53 @@ function altitudeDistance(km) {
     return 12 * 440 + 38 * 125 + (km - 50) * 70;
   }
 
-  return 12 * 440 + 38 * 125 + 50 * 70 + (km - 100) * 12;
+  return 12 * 440 + 38 * 125 + 50 * 70 + (km - 100) * 14;
 }
 
-const CLIMB_HEIGHT = altitudeDistance(CLIMB_TOP_KM);
+function altitudeDistance(km) {
+  if (km <= ATMOSPHERE_TOP_KM) {
+    return atmosphereDistance(km);
+  }
+
+  const logMin = Math.log10(ATMOSPHERE_TOP_KM + 1);
+  const logMax = Math.log10(EXPLORE_TOP_KM);
+  const logKm = Math.log10(Math.max(ATMOSPHERE_TOP_KM + 1, km));
+  const t = (logKm - logMin) / (logMax - logMin);
+
+  return atmosphereDistance(ATMOSPHERE_TOP_KM) + t * EXPLORE_SCROLL_PX;
+}
+
+const CLIMB_HEIGHT = altitudeDistance(EXPLORE_TOP_KM);
 
 function altitudeToY(km) {
   return TOP_PADDING + CLIMB_HEIGHT - altitudeDistance(km);
 }
 
 function distanceToAltitude(distance) {
-  if (distance <= 12 * 440) {
-    return distance / 440;
+  const atmosMax = atmosphereDistance(ATMOSPHERE_TOP_KM);
+
+  if (distance <= atmosMax) {
+    if (distance <= 12 * 440) {
+      return distance / 440;
+    }
+
+    if (distance <= 12 * 440 + 38 * 125) {
+      return 12 + (distance - 12 * 440) / 125;
+    }
+
+    if (distance <= 12 * 440 + 38 * 125 + 50 * 70) {
+      return 50 + (distance - 12 * 440 - 38 * 125) / 70;
+    }
+
+    return 100 + (distance - 12 * 440 - 38 * 125 - 50 * 70) / 14;
   }
 
-  if (distance <= 12 * 440 + 38 * 125) {
-    return 12 + (distance - 12 * 440) / 125;
-  }
+  const t = (distance - atmosMax) / EXPLORE_SCROLL_PX;
+  const logMin = Math.log10(ATMOSPHERE_TOP_KM + 1);
+  const logMax = Math.log10(EXPLORE_TOP_KM);
+  const logKm = logMin + t * (logMax - logMin);
 
-  if (distance <= 12 * 440 + 38 * 125 + 50 * 70) {
-    return 50 + (distance - 12 * 440 - 38 * 125) / 70;
-  }
-
-  return 100 + (distance - 12 * 440 - 38 * 125 - 50 * 70) / 12;
+  return 10 ** logKm;
 }
 
 function yToAltitude(y) {
@@ -300,6 +454,10 @@ function yToAltitude(y) {
 }
 
 function formatAlt(km) {
+  if (km >= 10000) {
+    return Math.round(km).toLocaleString("en-US");
+  }
+
   if (km < 10) {
     return km.toFixed(1).replace(".0", "");
   }
@@ -308,6 +466,13 @@ function formatAlt(km) {
 }
 
 function activeLayer(km) {
+  if (km > ATMOSPHERE_TOP_KM) {
+    return (
+      exploreLayers.find((layer) => km >= layer.start && km < layer.end) ||
+      exploreLayers.at(-1)
+    );
+  }
+
   return layers.find((layer) => km >= layer.start && km < layer.end) || layers.at(-1);
 }
 
@@ -331,35 +496,55 @@ function markerFigure(item) {
   `;
 }
 
-function renderLayers() {
-  layers.forEach((layer) => {
+function renderLayerBands(root, layerList) {
+  layerList.forEach((layer) => {
     const band = document.createElement("section");
     band.className = "layer-band";
     band.style.top = `${altitudeToY(layer.end)}px`;
     band.style.height = `${altitudeToY(layer.start) - altitudeToY(layer.end)}px`;
     band.style.background = layer.gradient;
     band.innerHTML = `
-      <div class="layer-band__label">
+      <div class="layer-band__label" style="top: ${layer.labelTop || "42%"}">
         <span class="layer-band__name">${layer.name}</span>
         <span class="layer-band__range">${layer.range}</span>
       </div>
     `;
-    layerRoot.appendChild(band);
+    root.appendChild(band);
   });
 }
 
 function renderMilestones() {
   milestones.forEach((item) => {
     const node = document.createElement("p");
+    const offsetX = item.offsetX || 0;
+
     node.className = "milestone";
     node.textContent = item.text;
-    node.style.top = `${altitudeToY(item.alt)}px`;
+    node.style.top = `${altitudeToY(item.alt) + (item.offset || 0)}px`;
+    node.style.transform = `translate(calc(-50% + ${offsetX}px), -50%)`;
     milestoneRoot.appendChild(node);
   });
 }
 
-function renderMarkers() {
-  markers.forEach((item) => {
+function buildSkyGradient() {
+  const height = sky.offsetHeight;
+
+  if (!height) {
+    return;
+  }
+
+  const stops = SKY_GRADIENT_STOPS.map(({ km, color }) => {
+    const y = altitudeToY(km);
+    const percent = Math.max(0, Math.min(100, (y / height) * 100));
+
+    return `${color} ${percent.toFixed(1)}%`;
+  }).join(", ");
+
+  skyGradient.style.background = `linear-gradient(to bottom, ${stops})`;
+}
+
+function renderMarkers(items, root) {
+  items.forEach((item) => {
     const marker = document.createElement("article");
     const seaLevelClass = item.alt === 0 ? " marker--sea-level" : "";
     const dataLine = item.data
@@ -374,10 +559,16 @@ function renderMarkers() {
       <p class="marker__text">${item.text}</p>
       ${dataLine}
     `;
-    markerRoot.appendChild(marker);
+    root.appendChild(marker);
   });
+}
 
-  positionMarkers();
+function positionMarkersIn(root, items) {
+  [...root.children].forEach((marker, index) => {
+    const item = items[index];
+
+    marker.style.top = `${altitudeToY(item.alt) + markerOffset(item)}px`;
+  });
 }
 
 function markerOffset(item) {
@@ -388,21 +579,13 @@ function markerOffset(item) {
   return item.offset || 0;
 }
 
-function positionMarkers() {
-  [...markerRoot.children].forEach((marker, index) => {
-    const item = markers[index];
-
-    marker.style.top = `${altitudeToY(item.alt) + markerOffset(item)}px`;
-  });
-}
-
-function renderAltitudeLines() {
-  [0, 5, 10, 12, 20, 35, 50, 76, 85, 100, 250, 408, 550, 700].forEach((alt) => {
+function renderAltitudeLines(root, alts) {
+  alts.forEach((alt) => {
     const line = document.createElement("div");
     line.className = "altitude-line";
     line.style.top = `${altitudeToY(alt)}px`;
     line.innerHTML = `<span>${formatAlt(alt)} km</span>`;
-    lineRoot.appendChild(line);
+    root.appendChild(line);
   });
 }
 
@@ -412,20 +595,70 @@ function setDocumentHeight() {
   const total = seaLevel + bottomPadding;
 
   sky.style.height = `${total}px`;
-  const introOffset =
-    window.innerWidth <= 760
-      ? Math.min(520, window.innerHeight * 0.58)
-      : Math.min(620, window.innerHeight * 0.62);
+  positionIntro();
+  ending.style.top = `${Math.max(96, altitudeToY(ATMOSPHERE_TOP_KM) - 520)}px`;
 
-  intro.style.top = `${seaLevel - introOffset}px`;
-  ending.style.top = `${Math.max(96, altitudeToY(CLIMB_TOP_KM) - 380)}px`;
+  buildSkyGradient();
+}
+
+function positionIntro() {
+  if (!intro) {
+    return;
+  }
+
+  const seaLevel = altitudeToY(0);
+  const vh = window.innerHeight;
+  const scrollAtZero = seaLevel - vh * FOCUS_RATIO;
+  const topInset = window.innerWidth <= 760 ? 56 : 72;
+  const bottomGap = 48;
+  const zoneTop = scrollAtZero + topInset;
+  const zoneBottom = seaLevel - bottomGap;
+  const introHeight = intro.offsetHeight;
+
+  let introTop = zoneTop + Math.max(0, (zoneBottom - zoneTop - introHeight) / 2);
+
+  introTop = Math.max(zoneTop, Math.min(introTop, zoneBottom - introHeight));
+  intro.style.top = `${introTop}px`;
+}
+
+function updateRocket(km) {
+  const showRocket = km >= 700 && km < 120000;
+
+  if (!showRocket) {
+    rocketShip.hidden = true;
+    rocketShip.setAttribute("aria-hidden", "true");
+    return;
+  }
+
+  rocketShip.hidden = false;
+  rocketShip.removeAttribute("aria-hidden");
+  rocketShip.style.top = `${altitudeToY(km)}px`;
+
+  let opacity = 0.9;
+
+  if (km > 60000) {
+    opacity = Math.max(0.35, 0.9 - (km - 60000) / 80000);
+  }
+
+  rocketShip.style.opacity = String(opacity);
+  rocketShip.classList.toggle("rocket-ship--boost", km >= ATMOSPHERE_TOP_KM);
 }
 
 function updateAltimeter() {
   const focusY = window.scrollY + window.innerHeight * FOCUS_RATIO;
-  const km = Math.max(0, Math.min(CLIMB_TOP_KM, yToAltitude(focusY)));
+  const km = Math.max(0, Math.min(EXPLORE_TOP_KM, yToAltitude(focusY)));
   altitudeValue.textContent = formatAlt(km);
   layerValue.textContent = activeLayer(km).name;
+  document.body.classList.toggle("is-at-surface", km < 4);
+
+  if (intro) {
+    const introFade = km < 0.6 ? 1 : Math.max(0, 1 - (km - 0.6) / 1.4);
+
+    intro.style.opacity = String(introFade);
+    intro.style.visibility = introFade > 0.05 ? "visible" : "hidden";
+  }
+
+  updateRocket(km);
 }
 
 function scrollToAltitude(km) {
@@ -453,22 +686,67 @@ function scrollToInitialAltitude() {
     return;
   }
 
-  const km = Math.max(0, Math.min(CLIMB_TOP_KM, requested));
+  const km = Math.max(0, Math.min(EXPLORE_TOP_KM, requested));
   scrollToAltitude(km);
 }
 
+const musicToggle = document.querySelector("#music-toggle");
+const ambience = document.querySelector("#ambience");
+const musicLabel = musicToggle.querySelector(".music-toggle__label");
+
+ambience.volume = 0.42;
+
+function setMusicUi(playing) {
+  musicToggle.setAttribute("aria-pressed", playing ? "true" : "false");
+  musicToggle.setAttribute(
+    "aria-label",
+    playing
+      ? "Pause background music: Méditation from Thaïs"
+      : "Play background music: Méditation from Thaïs by Massenet",
+  );
+  musicLabel.textContent = playing ? "Music on" : "Music off";
+  musicToggle.classList.toggle("music-toggle--on", playing);
+}
+
+async function toggleMusic() {
+  if (ambience.paused) {
+    try {
+      await ambience.play();
+      setMusicUi(true);
+    } catch {
+      setMusicUi(false);
+    }
+    return;
+  }
+
+  ambience.pause();
+  setMusicUi(false);
+}
+
+musicToggle.addEventListener("click", toggleMusic);
+
 history.scrollRestoration = "manual";
-renderLayers();
+renderLayerBands(layerRoot, layers);
+renderLayerBands(exploreLayerRoot, exploreLayers);
 renderMilestones();
-renderMarkers();
-renderAltitudeLines();
+renderMarkers(markers, markerRoot);
+renderMarkers(exploreMarkers, exploreMarkerRoot);
+positionMarkersIn(markerRoot, markers);
+positionMarkersIn(exploreMarkerRoot, exploreMarkers);
+renderAltitudeLines(lineRoot, [0, 5, 10, 12, 20, 35, 50, 76, 85, 100, 250, 408, 550, 700, 760]);
+renderAltitudeLines(exploreLineRoot, [2000, 35786, 100000, 384400]);
 setDocumentHeight();
-requestAnimationFrame(scrollToInitialAltitude);
+requestAnimationFrame(() => {
+  positionIntro();
+  scrollToInitialAltitude();
+});
 
 window.addEventListener("scroll", updateAltimeter, { passive: true });
 window.addEventListener("resize", () => {
   const km = yToAltitude(window.scrollY + window.innerHeight * FOCUS_RATIO);
   setDocumentHeight();
-  positionMarkers();
+  positionIntro();
+  positionMarkersIn(markerRoot, markers);
+  positionMarkersIn(exploreMarkerRoot, exploreMarkers);
   scrollToAltitude(km);
 });
